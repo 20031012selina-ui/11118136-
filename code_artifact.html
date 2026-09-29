@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林子芸 TzuYun Lin | Designer Card</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,500;0,700;1,400&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #f4f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --text-muted: #888888;
+            --border-color: #e2e2e8;
+            --accent-color: #000000;
+            --accent-glow: rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 0 1px rgba(0,0,0,0.1);
+            --card-shadow-hover: 0 35px 60px -15px rgba(0, 0, 0, 0.18), 0 10px 20px -5px rgba(0,0,0,0.08);
+            --badge-bg: #eef1f6;
+            --status-green: #10b981;
+            --transition-speed: 0.4s;
+            --easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        body.dark {
+            --bg-color: #0f0f11;
+            --card-bg: #18181c;
+            --text-primary: #f1f1f5;
+            --text-secondary: #a0a0ab;
+            --text-muted: #666673;
+            --border-color: #2a2a32;
+            --accent-color: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.12);
+            --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255,255,255,0.05);
+            --card-shadow-hover: 0 35px 60px -15px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.06);
+            --badge-bg: #22222a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景微弱紋理 */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 主容器與切換鈕 */
+        .page-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* 頂部工具列 */
+        .top-toolbar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.25rem;
+        }
+
+        .brand-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 0.9rem;
+            border-radius: 99px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* 名片本體 */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.25rem;
+            width: 100%;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.4s var(--easing), box-shadow 0.4s ease, border-color 0.4s ease, background-color var(--transition-speed) ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--text-secondary);
+        }
+
+        /* 名片頂部資訊列 */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            background: var(--badge-bg);
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--status-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--status-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .card-no {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-align: right;
+        }
+
+        /* 大頭照與主角區塊 */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .avatar-box {
+            position: relative;
+            width: 84px;
+            height: 84px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #222, #444);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.1);
+        }
+
+        .avatar-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+        }
+
+        .card:hover .avatar-box::after {
+            left: 100%;
+        }
+
+        .name-title-box h1 {
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .name-title-box h1 .en-name {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .name-title-box .job-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* 簡介 */
+        .bio-text {
+            font-size: 0.88rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* 核心技能標籤 */
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .skill-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+            background: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        /* 聯絡按鈕 */
+        .action-area {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            background-color: var(--text-primary);
+            color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .btn-primary i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover i {
+            transform: translateX(4px);
+        }
+
+        /* 社群連結列 */
+        .social-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.2rem;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .social-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .social-item:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        /* 頁尾版權說明 */
+        .footer-credits {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+
+        /* 聯絡彈窗 Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: var(--card-shadow-hover);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s var(--easing);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 1rem;
+            background: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .copy-btn {
+            background: var(--text-primary);
+            color: var(--card-bg);
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.85;
+        }
+
+        /* 複製提示訊息 */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            background: var(--text-primary);
+            color: var(--card-bg);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 101;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        
+        <!-- 頂部列：品牌識別與模式開關 -->
+        <div class="top-toolbar">
+            <span class="brand-logo">AI FRONTEND // WEEK 02</span>
+            <button class="theme-toggle-btn" id="themeToggle">
+                <i class="fa-solid fa-moon"></i>
+                <span id="themeLabel">Dark Mode</span>
+            </button>
+        </div>
+
+        <!-- 名片主要卡片區塊 -->
+        <div class="card" id="interactiveCard">
+            
+            <!-- 卡片頂部欄位 -->
+            <div class="card-header">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>AVAILABLE FOR FREELANCE</span>
+                </div>
+                <div class="card-no">
+                    NO. 2026 // DESIGNER
+                    <br>TAIPEI / TW
+                </div>
+            </div>
+
+            <!-- 個人資訊（名字、職稱、頭像） -->
+            <div class="profile-section">
+                <div class="avatar-box">
+                    TL
+                </div>
+                <div class="name-title-box">
+                    <h1>
+                        林子芸
+                        <span class="en-name">TzuYun Lin</span>
+                    </h1>
+                    <div class="job-title">Visual & UI/UX Designer</div>
+                </div>
+            </div>
+
+            <!-- 個人簡介 -->
+            <p class="bio-text">
+                專注於極簡主義、數位媒體與使用者體驗設計。將複雜的想法轉化為純粹、俐落的視覺語言，探索設計與前端科技的邊界。
+            </p>
+
+            <!-- 核心技能標籤 -->
+            <div class="section-label">Core Competencies</div>
+            <div class="skills-grid">
+                <span class="skill-tag">Design Systems</span>
+                <span class="skill-tag">UI/UX Architecture</span>
+                <span class="skill-tag">Brand Identity</span>
+                <span class="skill-tag">Interactive Motion</span>
+                <span class="skill-tag">Typography</span>
+            </div>
+
+            <!-- 主要行動按鈕 -->
+            <div class="action-area">
+                <button class="btn-primary" id="openModalBtn">
+                    GET IN TOUCH 聯絡我
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- 社群連結欄位 -->
+            <div class="social-links">
+                <a href="https://github.com" target="_blank" class="social-item">
+                    <i class="fa-brands fa-github"></i> GITHUB
+                </a>
+                <a href="https://behance.net" target="_blank" class="social-item">
+                    <i class="fa-brands fa-behance"></i> BEHANCE
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="social-item">
+                    <i class="fa-brands fa-linkedin"></i> LINKEDIN
+                </a>
+            </div>
+
+        </div>
+
+        <!-- 頁尾宣告 -->
+        <div class="footer-credits">
+            © 2026 TZU YUN LIN. ALL RIGHTS RESERVED.
+        </div>
+
+    </div>
+
+    <!-- 聯絡對話框 Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Get In Touch</div>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            
+            <div class="contact-option">
+                <span><i class="fa-regular fa-envelope"></i> tzuyun.design@email.com</span>
+                <button class="copy-btn" onclick="copyText('tzuyun.design@email.com')">Copy</button>
+            </div>
+            
+            <div class="contact-option">
+                <span><i class="fa-brands fa-line"></i> @tzuyun_design</span>
+                <button class="copy-btn" onclick="copyText('@tzuyun_design')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 複製成功提示 -->
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <!-- JavaScript 互動邏輯 -->
+    <script>
+        // 1. 日夜暗黑模式切換 (Dark Mode Toggle)
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeLabel = document.getElementById('themeLabel');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            
+            themeLabel.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+            themeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        });
+
+        // 2. 聯絡 Modal 彈窗控制
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const contactModal = document.getElementById('contactModal');
+
+        openModalBtn.addEventListener('click', () => {
+            contactModal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            contactModal.classList.remove('active');
+        });
+
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) {
+                contactModal.classList.remove('active');
+            }
+        });
+
+        // 3. 複製到剪貼簿功能
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Copied: ' + text);
+            }).catch(err => {
+                console.error('Copy failed: ', err);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // 4. 微 3D 視差傾斜特效 (Mouse Tilt Effect)
+        const card = document.getElementById('interactiveCard');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5;
+            const rotateY = ((x - centerX) / centerX) * 5;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+    </script>
+</body>
+</html>
